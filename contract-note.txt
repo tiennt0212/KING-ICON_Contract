@@ -1,0 +1,20 @@
+ag = hxb6b5791be0b5ef67063b3c10b840fb81514db2fd
+a1 = hxa86db5c38db4cc12d865f668b0da50de06cf9e44
+
+Hello World - Local - 22h22 01032023
+0x5d677b666c12fe47223388fccd6a5ea902c036c2be2aba08fc57acd354b897c9
+
+
+
+SBT User - Local
+14h36 - cxc758b0c2ef30ce385271fbf5ed3c39d4af68227e
+15h30 - cxccf78b51a2b0129a8d4e77eab496acd4e491c09c
+15h47 - cx7eb281eb2f1fca5263ca4c17fe62c07090e16df8
+
+CONTRACT=cx7eb281eb2f1fca5263ca4c17fe62c07090e16df8
+
+localCall $CONTRACT --method total
+localCall $CONTRACT --method getUser --param _address=hxb6b5791be0b5ef67063b3c10b840fb81514db2fd
+localCall $CONTRACT --method getUser --param _address=hxa86db5c38db4cc12d865f668b0da50de06cf9e44
+localSend $CONTRACT --method registerUser --param _name=Tien --param _avatar=""
+localSend $CONTRACT --method transfer --param _to=hxa86db5c38db4cc12d865f668b0da50de06cf9e44 --param _tokenId=1

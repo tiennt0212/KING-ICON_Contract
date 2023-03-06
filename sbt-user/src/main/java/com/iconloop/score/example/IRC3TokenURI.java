@@ -26,50 +26,69 @@ import score.annotation.External;
 import java.math.BigInteger;
 
 public class IRC3TokenURI extends IRC3Basic {
-    private final DictDB<BigInteger, String> tokens;
-    private final VarDB<BigInteger> countURI;
+    private final DictDB<Address, User> users;
+    private final VarDB<BigInteger> countUser;
 
     public IRC3TokenURI(String _name, String _symbol) {
         super(_name, _symbol);
-        this.tokens = Context.newDictDB("tokens", String.class);
-        this.countURI = Context.newVarDB("countURI", BigInteger.class);
-        this.countURI.set(BigInteger.ZERO);
+        this.users = Context.newDictDB("users", User.class);
+        this.countUser = Context.newVarDB("countUser", BigInteger.class);
+        this.countUser.set(BigInteger.ZERO);
+    }
+
+    // @External
+    // public void mint(BigInteger _tokenId) {
+    //     Context.require(Context.getCaller().equals(Context.getOwner()));
+    //     super._mint(Context.getCaller(), _tokenId);
+    // }
+
+    // @External
+    // public void mintURI(String uri) {
+    //     Context.require(Context.getCaller().equals(Context.getOwner()));
+    //     this.countUser.set(this.countUser.get().add(BigInteger.ONE));
+    //     this.users.set(this.countUser.get(), uri);
+    //     super._mint(Context.getCaller(), this.countUser.get());
+    // }
+
+    @External
+    public void registerUser(String _name, String _avatar) {
+        Context.require(!isUserAlreadyExist((Context.getCaller())));
+        this.countUser.set(this.countUser.get().add(BigInteger.ONE));
+        this.users.set(Context.getCaller(), new User(Context.getCaller(), _name, _avatar, this.countUser.get()));
+        super._mint(Context.getCaller(), this.countUser.get());
     }
 
     @External
-    public void mint(BigInteger _tokenId) {
-        Context.require(Context.getCaller().equals(Context.getOwner()));
-        super._mint(Context.getCaller(), _tokenId);
+    public void transfer(Address _to, BigInteger _tokenId) {
+        // throw new Error("Unable to transfer Soul Bound Token "+ _tokenId.toString() + " to " + _to.toString());
+        throw new UnsupportedOperationException("Unable to transfer Soul Bound Token "+ _tokenId.toString() + " to " + _to.toString());
     }
 
-    @External
-    public void mintURI(String uri) {
-        Context.require(Context.getCaller().equals(Context.getOwner()));
-        this.countURI.set(this.countURI.get().add(BigInteger.ONE));
-        this.tokens.set(this.countURI.get(), uri);
-        super._mint(Context.getCaller(), this.countURI.get());
-    }
-
-    @External
-    public void increaseCount() {
-        Context.require(Context.getCaller().equals(Context.getOwner()));
-        this.countURI.set(this.countURI.get().add(BigInteger.ONE));
-    }
+    // @External
+    // public void increaseCount() {
+    //     Context.require(Context.getCaller().equals(Context.getOwner()));
+    //     this.countUser.set(this.countUser.get().add(BigInteger.ONE));
+    // }
 
     @External(readonly = true)
-    public String getURIToken(BigInteger _tokenId) {
-        return this.tokens.get(_tokenId);
+    public String getUser(Address _address) {
+        Context.require(isUserAlreadyExist(_address));
+        return this.users.get(_address).toString();
     }
 
-    @External
-    public void burn(BigInteger _tokenId) {
-        Address owner = ownerOf(_tokenId);
-        Context.require(Context.getCaller().equals(owner));
-        super._burn(_tokenId);
-    }
+    // @External
+    // public void burn(BigInteger _tokenId) {
+    //     Address owner = ownerOf(_tokenId);
+    //     Context.require(Context.getCaller().equals(owner));
+    //     super._burn(_tokenId);
+    // }
 
     @External(readonly = true)
     public BigInteger total() {
-        return this.countURI.get();
+        return this.countUser.get();
+    }
+
+    private Boolean isUserAlreadyExist(Address _address) {
+        return this.users.get(_address) != null;
     }
 }
