@@ -18,3 +18,7 @@ localCall $CONTRACT --method getUser --param _address=hxb6b5791be0b5ef67063b3c10
 localCall $CONTRACT --method getUser --param _address=hxa86db5c38db4cc12d865f668b0da50de06cf9e44
 localSend $CONTRACT --method registerUser --param _name=Tien --param _avatar=""
 localSend $CONTRACT --method transfer --param _to=hxa86db5c38db4cc12d865f668b0da50de06cf9e44 --param _tokenId=1
+
+
+SBT User - Libson
+15h19 - cx57c71d9ff3c1dcacbf10758f021ee2c61190ef9b
