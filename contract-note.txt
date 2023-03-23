@@ -22,3 +22,14 @@ localSend $CONTRACT --method transfer --param _to=hxa86db5c38db4cc12d865f668b0da
 
 SBT User - Libson
 15h19 - cx57c71d9ff3c1dcacbf10758f021ee2c61190ef9b
+
+
+
+Stamp - Local
+14h37 - cx0fbfb03047051e360c2066464898f0da1e5825ab
+23h11 - cx1b3255bdc9e225c6b813d6623950ccb7ba367511
+Create Stamp by God: 
+localSend $CONTRACT --method mintStamp --param _image="https://image.vietnamnews.vn/uploadvnnews/Article/2020/5/18/87100_stamp.jpg"
+Buy stamp by user: 
+goloop rpc --uri http://127.0.0.1:9082/api/v3 --key_store /home/galileast/Hackathon/w1.json --key_password tie --nid 0x3 --step_limit 10000000 sendtx call --to $CONTRACT --method buyStamp --param _tokenId=1
+Check if token 
