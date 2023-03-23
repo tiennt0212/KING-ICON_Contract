@@ -88,19 +88,19 @@ public class IRC3TokenURI extends IRC3Basic {
     }
 
     @External(readonly = true)
-    public String getSentEmail() {
-        Address userAddress = Context.getCaller();
+    public String getSentEmail(Address _address) {
         int total = this.countStamp.get().intValue();
         String entries = "[";
         for (int i = 1; i <= total; i++) {
             BigInteger tokenId = BigInteger.valueOf(i);
             // Get all user stamp
             Stamp stamp = this.stamps.get(tokenId);
-            if (_tokenExists(tokenId) && stamp.receiver().equals(userAddress)) {
-                entries += stamp.toString();
-                if (i < total)
-                    entries += ",";
-            }
+            if (_tokenExists(tokenId) && stamp.expired())
+                if (stamp.sender().equals(_address)) {
+                    entries += stamp.toString();
+                    if (i < total)
+                        entries += ",";
+                }
         }
         return entries + "]";
     }
